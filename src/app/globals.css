@@ -1,0 +1,2050 @@
+/* ============================================================
+   CONVERTIDO MED — SISTEMA "LÂMINA"
+
+   Tese: toda a operação é diagnóstica. O vocabulário visual vem
+   do laboratório de histologia — lâminas preparadas, etiquetas
+   de espécime, campo claro e campo escuro. O hero abre com a sala
+   de verdade; o laboratório aparece nos cards e nas colorações.
+
+   A paleta não é decorativa. O roxo e o magenta da Convertido são,
+   literalmente, hematoxilina e eosina: a coloração H&E, a preparação
+   mais comum da medicina. Os demais tons são outras colorações reais,
+   e cada um carrega informação — a especialidade de um case, a fase
+   de um método, o peso de uma recusa.
+
+   Estrutura em três atos:
+     Campo escuro — hero, manifesto, recusas, contato, rodapé
+     Campo claro  — método (com a faixa de prova), 4S, comparação, cases
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   1 · TOKENS GLOBAIS
+   ============================================================ */
+:root {
+  /* --- Colorações: RGB cru, para compor lavagens com alpha --- */
+  /* Campo escuro precisa de tons luminosos; campo claro, de tons densos.
+     Os pares abaixo são redefinidos por [data-field]. */
+
+  /* --- Tipografia --- */
+  --font-display: var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* --- Escala tipográfica --- */
+  --t-micro: 10.5px;
+  --t-mono: 11.5px;
+  --t-xs: 13px;
+  --t-sm: 14px;
+  --t-base: 15.5px;
+  --t-md: 17px;
+  --t-lg: clamp(19px, 1.6vw, 22px);
+  --t-xl: clamp(23px, 2.4vw, 30px);
+  --t-2xl: clamp(28px, 4vw, 44px);
+  --t-3xl: clamp(38px, 6.6vw, 74px);
+
+  /* --- Espaçamento (ritmo de 4px) --- */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+  --s9: 96px;
+  --s10: 128px;
+
+  /* --- Raios: lâminas são retangulares --- */
+  --r1: 3px;
+  --r2: 6px;
+  --r3: 10px;
+
+  /* --- Layout --- */
+  --wrap: 1180px;
+  --gutter: clamp(20px, 5vw, 48px);
+  --section-y: clamp(64px, 9vw, 128px);
+
+  /* --- Movimento --- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 160ms;
+  --mid: 260ms;
+  --slow: 420ms;
+
+  /* --- Camadas --- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-overlay: 900;
+}
+
+/* ============================================================
+   2 · CAMPOS (o tema é por seção, não por página)
+   ============================================================ */
+[data-field='dark'] {
+  --bg: #0b0a14;
+  --bg-2: #100e1b;
+  --fg: #f4f2fa;
+  --fg-2: rgba(244, 242, 250, 0.64);
+  --fg-3: rgba(244, 242, 250, 0.46);
+  --rule: rgba(244, 242, 250, 0.1);
+  --rule-2: rgba(244, 242, 250, 0.2);
+  --card: #131120;
+  --card-2: #1a1728;
+
+  /* Acento da marca: #70A6BC. Hematoxilina e eosina compartilham o
+     mesmo valor por decisao de identidade — seguem em tokens separados
+     para poderem voltar a divergir sem tocar em componente. */
+  --rgb-hematox: 112 166 188;
+  --rgb-eosin: 112 166 188;
+  --on-accent: #0b0a14;
+  --rgb-accent-hover: 138 186 205;
+  --rgb-aniline: 91 155 216;
+  --rgb-ochre: 217 169 74;
+  --rgb-malachite: 79 191 158;
+  --rgb-congo: 224 105 122;
+}
+
+[data-field='bright'] {
+  --bg: #edeae3;
+  --bg-2: #f5f3ee;
+  --fg: #151320;
+  --fg-2: rgba(21, 19, 32, 0.68);
+  --fg-3: rgba(21, 19, 32, 0.52);
+  --rule: rgba(21, 19, 32, 0.13);
+  --rule-2: rgba(21, 19, 32, 0.24);
+  --card: #f7f5f1;
+  --card-2: #fffdfa;
+
+  /* #70A6BC em hsl(197 36% 59%) cai para 2,2:1 aqui. Mesmo matiz e
+     mesma saturação, luminosidade a 31% — #335B6C, 6,1:1. */
+  --rgb-hematox: 51 91 108;
+  --rgb-eosin: 51 91 108;
+  --on-accent: #ffffff;
+  --rgb-accent-hover: 40 74 88;
+  --rgb-aniline: 35 96 143;
+  --rgb-ochre: 138 100 16;
+  --rgb-malachite: 29 110 90;
+  --rgb-congo: 158 43 59;
+}
+
+/* ============================================================
+   3 · BASE
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #0b0a14;
+  color: #f4f2fa;
+  font-size: var(--t-base);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  /* Sem forcar cor de texto: o acento e claro num campo e denso no
+     outro, entao qualquer valor fixo quebraria em um dos dois. */
+  background: rgb(var(--rgb-hematox, 112 166 188) / 0.32);
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--rgb-hematox) / 1);
+  outline-offset: 3px;
+  border-radius: var(--r1);
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Toda seção pinta o próprio chão — é o que sustenta os três atos. */
+.field {
+  background: var(--bg);
+  color: var(--fg);
+  padding: var(--section-y) 0;
+  position: relative;
+}
+
+/* Secao que abre com o painel atravessado na divisao: o respiro do topo
+   sai, porque quem o ocupa e a metade do painel que sobe para o campo
+   anterior. Precisa vir depois de .field — mesma especificidade.
+
+   flow-root e o que faz funcionar: sem contexto de formatacao proprio,
+   a margem negativa do painel colapsa para fora e arrasta a secao
+   inteira para cima — o limite sobe junto e nada se sobrepoe. */
+.field-overlap {
+  padding-top: 0;
+  display: flow-root;
+}
+
+/* ============================================================
+   4 · TIPOGRAFIA
+   ============================================================ */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  color: var(--fg);
+  font-variation-settings: 'wdth' 96, 'opsz' 48;
+}
+
+.h1 {
+  font-size: var(--t-3xl);
+}
+
+.h2 {
+  font-size: var(--t-2xl);
+  line-height: 1.02;
+}
+
+.h3 {
+  font-size: var(--t-xl);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.lede {
+  font-size: var(--t-md);
+  color: var(--fg-2);
+  line-height: 1.6;
+  max-width: 58ch;
+}
+
+.body-sm {
+  font-size: var(--t-sm);
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* Voz de instrumento: mono para tudo que é etiqueta, medida ou código. */
+.mono {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' 1;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* --- Etiqueta de espécime: swatch + código --- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--rgb) / 1);
+  --rgb: var(--rgb-hematox);
+}
+
+.tag-swatch {
+  width: 8px;
+  height: 8px;
+  background: rgb(var(--rgb) / 1);
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   5 · BOTÕES
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 46px;
+  padding: 0 var(--s5);
+  border: 1px solid transparent;
+  border-radius: var(--r1);
+  font-family: var(--font-body);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Azul claro no campo escuro pede tinta escura (7,4:1); azul denso no
+   campo claro pede branco (7,3:1). O token resolve os dois. */
+.btn-primary {
+  background: rgb(var(--rgb-hematox) / 1);
+  color: var(--on-accent);
+}
+
+.btn-primary:hover {
+  background: rgb(var(--rgb-accent-hover) / 1);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--rule-2);
+}
+
+.btn-ghost:hover {
+  border-color: rgb(var(--rgb-hematox) / 1);
+  background: rgb(var(--rgb-hematox) / 0.08);
+}
+
+.btn-arrow {
+  transition: transform var(--mid) var(--ease);
+  display: inline-flex;
+}
+
+.btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* A coloracao vale para qualquer elemento, nao so para a lamina. */
+[data-stain='hematox']   { --rgb: var(--rgb-hematox); }
+[data-stain='eosin']     { --rgb: var(--rgb-eosin); }
+[data-stain='aniline']   { --rgb: var(--rgb-aniline); }
+[data-stain='ochre']     { --rgb: var(--rgb-ochre); }
+[data-stain='malachite'] { --rgb: var(--rgb-malachite); }
+[data-stain='congo']     { --rgb: var(--rgb-congo); }
+
+/* ============================================================
+   6 · A LÂMINA — o card, e a assinatura da página
+
+   Cada card é montado como uma lâmina de microscópio: uma faixa
+   de etiqueta no topo, o campo corado abaixo. No hover a coloração
+   satura, como um corante avançando pelo tecido.
+   ============================================================ */
+.specimen {
+  --rgb: var(--rgb-hematox);
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r2);
+  overflow: hidden;
+  transition:
+    border-color var(--mid) var(--ease),
+    transform var(--mid) var(--ease);
+  isolation: isolate;
+}
+
+/* A lavagem: pseudo-elemento com opacidade animada (nunca layout). */
+.specimen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    120% 90% at 0% 0%,
+    rgb(var(--rgb) / 0.16),
+    transparent 62%
+  );
+  opacity: 0.5;
+  transition: opacity var(--slow) var(--ease);
+}
+
+/* A borda de coloração à esquerda, que cresce no hover. */
+.specimen::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgb(var(--rgb) / 1);
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform var(--mid) var(--ease);
+}
+
+.specimen:hover {
+  border-color: rgb(var(--rgb) / 0.4);
+  transform: translateY(-3px);
+}
+
+.specimen:hover::before {
+  opacity: 1;
+}
+
+.specimen:hover::after {
+  transform: scaleX(2.5);
+}
+
+/* Faixa de etiqueta */
+.specimen-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--rule);
+  background: rgb(var(--rgb) / 0.07);
+  color: rgb(var(--rgb) / 1);
+}
+
+/* O logo na faixa da etiqueta: a altura e escolhida para a caixa alta do
+   MED bater com a caixa alta do mono que ele substitui nas outras laminas. */
+.tag-logo {
+  display: block;
+  height: 14px;
+  width: auto;
+}
+
+/* CTA da faixa: sem fundo e sem borda, encostado na ponta direita. A
+   seta tem 14px, mas o alvo de toque precisa de mais — o padding cria a
+   area e a margem negativa devolve a seta ao limite optico da faixa. */
+.tag-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  padding: var(--s2);
+  margin-right: calc(var(--s2) * -1);
+  color: inherit;
+  transition: color var(--fast) var(--ease);
+}
+
+.tag-cta:hover {
+  color: var(--fg);
+}
+
+.tag-cta:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+.specimen-body {
+  padding: var(--s5);
+}
+
+/* ============================================================
+   7 · CABEÇALHO DE SEÇÃO
+   ============================================================ */
+/* Centralizado: etiqueta, titulo e lede no eixo do meio. A lede tem
+   max-width propria, entao a caixa dela tambem precisa centrar — sem isso
+   o texto viria centrado dentro de um bloco ainda encostado a esquerda. */
+.section-head {
+  max-width: 62ch;
+  margin-inline: auto;
+  margin-bottom: var(--s8);
+  text-align: center;
+}
+
+.section-head .lede {
+  margin-inline: auto;
+}
+
+.section-head .h2 {
+  margin: var(--s4) 0 var(--s4);
+  /* Titulo centrado tem que quebrar equilibrado, senao sobra uma palavra
+     sozinha na ultima linha e a simetria some. */
+  text-wrap: balance;
+}
+
+/* ============================================================
+   8 · TOPBAR
+   ============================================================ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(11, 10, 20, 0.86);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  /* So os cantos de baixo: a barra encosta no topo da janela, entao
+     arredondar la em cima nao teria o que mostrar atras. */
+  border-bottom-left-radius: var(--r3);
+  border-bottom-right-radius: var(--r3);
+  transition: border-color var(--mid) var(--ease), background var(--mid) var(--ease);
+}
+
+.topbar.scrolled {
+  border-bottom-color: rgba(244, 242, 250, 0.12);
+  background: rgba(11, 10, 20, 0.95);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s5);
+  min-height: 62px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #f4f2fa;
+}
+
+/* O logo e branco: so vive em campo escuro. A barra e o rodape sao os
+   dois unicos lugares do site que garantem esse chao. */
+.brand-logo {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--s6);
+  list-style: none;
+}
+
+.nav-links a {
+  color: rgba(244, 242, 250, 0.64);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color var(--fast) var(--ease);
+}
+
+.nav-links a:hover {
+  color: #f4f2fa;
+}
+
+.nav-cta {
+  min-height: 38px;
+  padding: 0 var(--s4);
+  font-family: var(--font-body);
+  font-size: var(--t-xs);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.nav-links .nav-cta:hover {
+  color: #fff;
+}
+
+/* Botão de menu — 44px de alvo, com estados reais */
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(244, 242, 250, 0.2);
+  border-radius: var(--r1);
+  color: #f4f2fa;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  border-color: rgb(var(--rgb-hematox) / 1);
+}
+
+.mobile-menu {
+  border-top: 1px solid rgba(244, 242, 250, 0.12);
+  background: rgba(11, 10, 20, 0.98);
+  border-bottom-left-radius: var(--r3);
+  border-bottom-right-radius: var(--r3);
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: var(--s3) 0 var(--s5);
+}
+
+.mobile-menu a {
+  display: block;
+  padding: var(--s4) 0;
+  color: rgba(244, 242, 250, 0.78);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(244, 242, 250, 0.08);
+}
+
+.mobile-menu a:hover {
+  color: #f4f2fa;
+}
+
+.mobile-menu .btn {
+  width: 100%;
+  margin-top: var(--s4);
+}
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
+
+/* ============================================================
+   9 · HERO — campo escuro
+
+   O micrográfico corado ao fundo, com vinheta circular: a página
+   abre literalmente pela ocular do microscópio.
+   ============================================================ */
+.hero {
+  position: relative;
+  /* Mesma altura total de antes, redistribuida: sai do topo e vai para
+     a base, entao o conteudo sobe e ganha folga ate a faixa. */
+  padding: clamp(48px, 7.5vw, 108px) 0 clamp(112px, 13.5vw, 180px);
+  overflow: hidden;
+}
+
+.field-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.field-photo picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.field-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Foto com rostos precisa de opacidade alta para ser reconhecivel;
+     quem constroi o contraste do texto e o degrade abaixo. */
+  opacity: 0.68;
+  filter: saturate(0.8) contrast(1.05) brightness(0.94);
+}
+
+.field-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* Lateral: quase solido sob a coluna de texto, abrindo ate a direita
+       para liberar as pessoas. O texto ocupa cerca de 9% a 58% da largura. */
+    linear-gradient(
+      90deg,
+      #0b0a14 0%,
+      rgba(11, 10, 20, 0.95) 30%,
+      rgba(11, 10, 20, 0.82) 55%,
+      rgba(11, 10, 20, 0.45) 72%,
+      rgba(11, 10, 20, 0.28) 100%
+    ),
+    /* Vertical: assenta a foto sob a topbar e na base, onde o painel entra. */
+    linear-gradient(
+      180deg,
+      rgba(11, 10, 20, 0.72) 0%,
+      transparent 24%,
+      transparent 72%,
+      rgba(11, 10, 20, 0.88) 100%
+    );
+}
+
+/* No mobile o texto ocupa a largura toda: um degrade lateral nao protege
+   nada. Aqui o escurecimento tem que ser parelho no quadro inteiro. */
+@media (max-width: 959px) {
+  .field-photo img {
+    opacity: 0.5;
+  }
+
+  .field-photo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(11, 10, 20, 0.92) 0%,
+      rgba(11, 10, 20, 0.84) 40%,
+      rgba(11, 10, 20, 0.8) 70%,
+      rgba(11, 10, 20, 0.92) 100%
+    );
+  }
+}
+
+.hero-grid {
+  position: relative;
+  z-index: var(--z-raised);
+}
+
+@media (min-width: 960px) {
+  .hero-content {
+    max-width: 60%;
+  }
+}
+
+.hero-headline {
+  margin: var(--s5) 0 var(--s5);
+  max-width: 15ch;
+}
+
+/* A palavra que carrega a promessa recebe a coloração. */
+.hero-headline .em {
+  font-style: normal;
+  color: rgb(var(--rgb-eosin) / 1);
+  position: relative;
+  white-space: nowrap;
+}
+
+.hero-headline .em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.1em;
+  height: 3px;
+  background: rgb(var(--rgb-eosin) / 0.45);
+}
+
+.hero-ctas {
+  display: flex;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  margin-top: var(--s6);
+}
+
+/* ============================================================
+   10 · PROVA — a régua de leitura
+   ============================================================ */
+/* A faixa e um painel proprio: cantos arredondados, superficie
+   elevada e sombra. E o que a separa do hero — nao ha regua de
+   costura, o recorte da forma ja faz o trabalho. */
+.proof-panel {
+  /* Sobe metade da propria altura para ficar montado na divisao entre
+     o hero e o metodo — parte no campo escuro, parte no claro. */
+  position: relative;
+  z-index: var(--z-raised);
+  margin-top: calc(-1 * clamp(48px, 6.5vw, 92px));
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s6);
+  align-items: center;
+  padding: clamp(24px, 3.6vw, 40px);
+  background: var(--card);
+  /* A metade de cima encosta no hero, quase da mesma cor. Sem esta
+     regua o painel perderia a silhueta ali em cima. */
+  border: 1px solid var(--rule-2);
+  border-radius: 22px;
+  /* Sombra mais curta e menos densa: sobre chao claro a mesma sombra
+     do campo escuro vira uma mancha. */
+  box-shadow: 0 20px 48px -28px rgba(21, 19, 32, 0.5);
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+
+@media (min-width: 860px) {
+  .proof-panel {
+    grid-template-columns: 260px 1fr;
+    gap: var(--s8);
+  }
+}
+
+/* --- Credenciais em rodizio ---
+
+   Todas as quatro ficam empilhadas na mesma celula do grid: a altura
+   e a da maior, entao nada salta quando a ativa troca. Trocar opacidade
+   e transform mantem a animacao fora do layout. */
+.claims {
+  display: grid;
+  list-style: none;
+}
+
+.claim {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Gap menor compensa o icone maior: a altura da coluna nao muda. */
+  gap: var(--s3);
+  opacity: 0;
+  transform: translateY(7px);
+  /* A saida e mais curta que a entrada: some rapido, entra com calma. */
+  transition:
+    opacity 170ms var(--ease),
+    transform 170ms var(--ease);
+}
+
+.claim.is-active {
+  opacity: 1;
+  transform: none;
+  transition-duration: 340ms;
+}
+
+/* Solto: sem moldura e sem fundo, so o traco na cor da coloracao. */
+.claim-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: rgb(var(--rgb) / 1);
+}
+
+/* Os icones sao desenhados numa grade de 24 com traco 1.5. Ampliados
+   para 44 o traco engordaria junto e o desenho ficaria pesado; 1.1
+   devolve a espessura optica original. CSS vence o atributo do SVG. */
+.claim-icon svg {
+  stroke-width: 1.1;
+}
+
+.claim-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-sm);
+  /* Caixa alta em mono pede tracking menor conforme o corpo cresce. */
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg);
+  line-height: 1.4;
+}
+
+/* Sem rodizio (movimento reduzido): as quatro ficam visiveis de uma vez. */
+.claims-still {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s5);
+}
+
+.claims-still .claim {
+  opacity: 1;
+  transform: none;
+}
+
+.proof-numbers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s5);
+}
+
+@media (min-width: 640px) {
+  .proof-numbers {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.proof-item {
+  padding-top: var(--s4);
+  border-top: 2px solid rgb(var(--rgb) / 1);
+  --rgb: var(--rgb-hematox);
+}
+
+.proof-value {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--fg);
+  font-variation-settings: 'wdth' 92;
+  margin-bottom: var(--s2);
+}
+
+.proof-caption {
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+  line-height: 1.45;
+}
+
+/* ============================================================
+   11 · MANIFESTO
+   ============================================================ */
+
+/* Tres colunas: argumento e acao, foto, crencas. A foto no meio estica
+   para acompanhar a coluna mais alta, entao as tres terminam juntas. */
+.manifesto-grid {
+  /* Uma superficie so para os tres: foto, crencas e promessa. Neutra em
+     vez da lavagem verde que a promessa usava — assim ela vale para
+     qualquer coloracao e os cards ficam mesmo iguais. */
+  --panel: rgba(244, 242, 250, 0.05);
+  --panel-rule: rgba(244, 242, 250, 0.09);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s7);
+  align-items: stretch;
+}
+
+@media (min-width: 720px) {
+  .manifesto-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Ate o desktop as crencas ficam embaixo, ocupando as duas colunas. */
+  .beliefs {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1060px) {
+  .manifesto-grid {
+    grid-template-columns: 0.95fr 1.15fr 1.1fr;
+    gap: var(--s8);
+  }
+  .beliefs {
+    grid-column: auto;
+  }
+}
+
+.manifesto-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Maior que o .h2 padrao das outras secoes: aqui o titulo divide a
+   coluna com pouco texto e precisa segurar o bloco sozinho. */
+.manifesto-intro .h2 {
+  font-size: clamp(34px, 4vw, 56px);
+  margin: var(--s4) 0 var(--s4);
+}
+
+.manifesto-lede {
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--fg-2);
+}
+
+/* Antes isto usava margin-top:auto para colar na base da coluna, o que
+   abria um vao enorme depois do subtitulo. A coluna passa a ser compacta
+   no topo — como na referencia — e a sobra fica embaixo, onde nao
+   incomoda. */
+.promise {
+  --rgb: var(--rgb-malachite);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  margin-top: var(--s6);
+  padding: var(--s4);
+  background: var(--panel);
+  border: 1px solid var(--panel-rule);
+  border-left: 2px solid rgb(var(--rgb) / 1);
+  border-radius: var(--r2);
+}
+
+.promise-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgb(var(--rgb) / 0.16);
+  color: rgb(var(--rgb) / 1);
+}
+
+.promise-text {
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+.manifesto-cta {
+  margin-top: var(--s5);
+}
+
+/* Empilhado a figura ocupa a largura toda: paisagem cai melhor. O
+   padding e o que faz o painel aparecer em volta da foto. */
+.manifesto-figure {
+  aspect-ratio: 3 / 2;
+  padding: var(--s3);
+  background: var(--panel);
+  border: 1px solid var(--panel-rule);
+  border-radius: var(--r3);
+}
+
+/* Em tres colunas a figura acompanha a altura da linha em vez de ditar.
+   A imagem precisa sair do fluxo para isso: com height:100% dentro de
+   um pai de altura automatica ela cai para o tamanho intrinseco e passa
+   a empurrar a linha — era o que deixava a foto mais alta que as duas
+   colunas de texto. */
+@media (min-width: 1060px) {
+  .manifesto-figure {
+    position: relative;
+    aspect-ratio: auto;
+    align-self: stretch;
+    min-height: 340px;
+  }
+
+  /* inset acompanha o padding: a moldura sobrevive ao posicionamento. */
+  .manifesto-figure picture,
+  .manifesto-figure img {
+    position: absolute;
+    inset: var(--s3);
+    width: auto;
+    height: auto;
+  }
+}
+
+.manifesto-figure picture,
+.manifesto-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r2);
+}
+
+.manifesto-figure img {
+  object-fit: cover;
+  /* Folga simetrica no recorte, entao o centro serve. */
+  object-position: 50% 50%;
+}
+
+/* Lista de crencas: distintivo redondo a esquerda, titulo e texto a direita. */
+.beliefs {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  /* Vao menor: como agora sao cards, a borda ja separa. */
+  gap: var(--s3);
+}
+
+.belief {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s4);
+  align-items: start;
+  padding: var(--s4);
+  background: var(--panel);
+  border: 1px solid var(--panel-rule);
+  border-radius: var(--r2);
+}
+
+/* Entrada: cada crenca desliza de tras da foto, em ordem.
+
+   So no desktop, onde a foto fica de fato a esquerda da coluna. A foto
+   sobe para z-index 2 e os cards ficam em 1, entao o trecho do card que
+   ainda esta sobre ela fica escondido — e o que da a leitura de "sair
+   de tras". Empilhado nao ha o que esconder, e vale a entrada padrao. */
+@media (min-width: 1060px) {
+  .manifesto-figure {
+    z-index: 2;
+  }
+
+  /* A lista so dispara o gatilho; quem anima sao os filhos. */
+  .beliefs[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .beliefs .belief {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateX(-120px);
+    transition:
+      opacity 780ms var(--ease),
+      transform 1000ms var(--ease);
+  }
+
+  .beliefs.revealed .belief {
+    opacity: 1;
+    transform: none;
+  }
+
+  .beliefs.revealed .belief:nth-child(1) { transition-delay: 0ms; }
+  .beliefs.revealed .belief:nth-child(2) { transition-delay: 220ms; }
+  .beliefs.revealed .belief:nth-child(3) { transition-delay: 440ms; }
+  .beliefs.revealed .belief:nth-child(4) { transition-delay: 660ms; }
+}
+
+/* Sem JS o observer nunca marca .revealed; os cards nao podem sumir. */
+@media (scripting: none) {
+  .beliefs .belief {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Solto: sem moldura e sem fundo, so o traco na coloracao. Sem a
+   caixa de 44px o icone define a propria coluna. */
+.belief-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  /* Alinha a altura de caixa alta do titulo, nao ao topo da linha. */
+  margin-top: 2px;
+  color: rgb(var(--rgb) / 1);
+}
+
+.belief-title {
+  font-family: var(--font-display);
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--fg);
+  margin-bottom: var(--s2);
+}
+
+.belief-text {
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  color: var(--fg-2);
+}
+
+/* ============================================================
+   12 · MÉTODO — o eixo de 90 dias
+
+   Sem marcadores numerados: o que ordena as fases é o próprio
+   intervalo de dias, desenhado como um eixo real.
+   ============================================================ */
+.axis {
+  display: none;
+  margin-bottom: var(--s6);
+}
+
+@media (min-width: 860px) {
+  .axis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    align-items: end;
+    gap: var(--s5);
+  }
+}
+
+.axis-seg {
+  --rgb: var(--rgb-hematox);
+}
+
+.axis-mark {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: var(--s2);
+}
+
+.axis-bar {
+  display: block;
+  height: 3px;
+  background: rgb(var(--rgb) / 1);
+  border-radius: 2px;
+  transform-origin: left;
+}
+
+.axis-end {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding-bottom: 1px;
+}
+
+.phases {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s5);
+}
+
+@media (min-width: 860px) {
+  .phases {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Os dias carregam o peso visual; "Fase 01" fica como referência miúda. */
+.phase-days {
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: rgb(var(--rgb) / 1);
+  line-height: 1;
+}
+
+.phase-name {
+  margin: var(--s3) 0 var(--s4);
+}
+
+.phase-desc {
+  font-size: var(--t-sm);
+  color: var(--fg-2);
+  line-height: 1.6;
+  margin-bottom: var(--s5);
+}
+
+.phase-list {
+  list-style: none;
+  padding-top: var(--s4);
+  border-top: 1px solid var(--rule);
+}
+
+.phase-list li {
+  display: flex;
+  gap: var(--s3);
+  align-items: baseline;
+  padding: var(--s2) 0;
+  font-size: var(--t-xs);
+  color: var(--fg);
+}
+
+.phase-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: rgb(var(--rgb) / 1);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   13 · OS 4S — painel de quatro colorações
+   ============================================================ */
+.four-s-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s4);
+}
+
+@media (min-width: 560px) {
+  .four-s-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .four-s-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.s-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(var(--rgb) / 0.38);
+  border-radius: var(--r1);
+  color: rgb(var(--rgb) / 1);
+  background: rgb(var(--rgb) / 0.1);
+  margin-bottom: var(--s5);
+}
+
+.s-name {
+  margin-bottom: var(--s3);
+}
+
+.s-desc {
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+  line-height: 1.62;
+}
+
+/* ============================================================
+   14 · COMPARAÇÃO
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s5);
+  align-items: start;
+}
+
+@media (min-width: 860px) {
+  .compare-grid {
+    grid-template-columns: 1fr 1.08fr;
+  }
+}
+
+/* A coluna da agência comum é lisa de propósito: sem coloração. */
+.compare-neg {
+  border: 1px dashed var(--rule-2);
+  border-radius: var(--r2);
+  padding: var(--s6);
+  background: transparent;
+}
+
+.compare-neg-tag {
+  color: var(--fg-3);
+}
+
+.compare-title {
+  margin: var(--s4) 0 var(--s6);
+}
+
+.compare-list {
+  list-style: none;
+}
+
+.compare-list li {
+  display: flex;
+  gap: var(--s3);
+  align-items: flex-start;
+  padding: var(--s4) 0;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--fg);
+  border-top: 1px solid var(--rule);
+}
+
+.compare-list li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.compare-icon {
+  flex-shrink: 0;
+  color: var(--fg-3);
+  transform: translateY(2px);
+}
+
+.compare-pos .compare-icon {
+  color: rgb(var(--rgb) / 1);
+}
+
+.compare-pos .specimen-body {
+  padding: var(--s6);
+}
+
+/* A lamina da Convertido Med nao entra junto com a da agencia comum: sobe
+   de mais baixo e depois dela, para ler como resposta ao que veio antes.
+   O estado revelado vai declarado aqui com especificidade propria — nao
+   por ordem de arquivo, que e como a coloracao se perde mais abaixo. */
+.compare-pos[data-reveal] {
+  transform: translateY(64px);
+  transition-delay: 260ms;
+}
+
+.compare-pos[data-reveal].revealed {
+  transform: none;
+}
+
+/* ============================================================
+   15 · CASES — coloração por especialidade
+
+   Osso ocre para ortopedia, azul de anilina para oftalmologia,
+   eosina para cirurgia plástica. A cor diz de qual tecido se trata.
+   ============================================================ */
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s5);
+}
+
+@media (min-width: 900px) {
+  .cases-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Os filetes vao de borda a borda: sao a regra da ficha, nao listras
+   desenhadas dentro de uma caixa. Por isso a linha sai do padding do
+   corpo com margem negativa e o devolve como padding proprio. */
+.case-metric {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s4);
+  margin-inline: calc(var(--s5) * -1);
+  padding: var(--s4) var(--s5);
+  border-top: 1px solid var(--rule);
+}
+
+.case-metric:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.case-value {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.4vw, 31px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: rgb(var(--rgb) / 1);
+  font-variation-settings: 'wdth' 90;
+  white-space: nowrap;
+}
+
+.case-label {
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+  text-align: right;
+  line-height: 1.35;
+  max-width: 17ch;
+  text-wrap: pretty;
+}
+
+/* O filete da legenda cai no mesmo ritmo dos filetes das metricas — com
+   tres cards lado a lado, regua fora de alinhamento salta aos olhos, e
+   legenda encostada no rodape desalinharia todas. So o texto ganha ar a
+   mais depois da linha: prosa pede mais que numero. */
+.case-caption {
+  margin-top: 0;
+  margin-inline: calc(var(--s5) * -1);
+  padding: var(--s5) var(--s5) 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.cases-note {
+  margin-top: var(--s6);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  text-align: center;
+}
+
+/* ============================================================
+   16 · RECUSAS — campo claro, sem cards
+
+   Quebra deliberada de ritmo: depois de quatro seções de lâminas,
+   as recusas chegam como uma lista severa.
+   ============================================================ */
+.refusals {
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+/* Numeral | recusa | razão. A recusa recebe mais coluna que a razão
+   porque é ela que decide se o leitor continua. */
+.refusals li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--s5);
+  align-items: baseline;
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  transition: background var(--mid) var(--ease);
+}
+
+/* O corte congo na borda: só aparece sob o cursor, e cresce do topo.
+   É a régua vermelha do revisor, não um card se acendendo. */
+.refusals li::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--s4) * -1);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgb(var(--rgb-congo) / 1);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--mid) var(--ease);
+}
+
+.refusals li:hover::before {
+  transform: scaleY(1);
+}
+
+.refusals li:hover {
+  background: rgb(var(--rgb-congo) / 0.05);
+}
+
+/* O ícone ocupa a coluna que era do numeral. align-self start porque a
+   linha alinha por baseline, e um SVG não tem uma para oferecer: o
+   padding é o que o encaixa na altura da primeira linha da recusa. */
+.refusal-mark {
+  display: flex;
+  align-self: start;
+  padding-top: 2px;
+  color: rgb(var(--rgb-congo) / 1);
+  transition: color var(--mid) var(--ease), transform var(--mid) var(--ease);
+}
+
+.refusals li:hover .refusal-mark {
+  transform: translateX(2px);
+}
+
+/* A recusa: some com o resto se você ler só isto e já tiver decidido. */
+.refusal-claim {
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--fg-2);
+  text-wrap: balance;
+}
+
+.refusal-claim strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* A razão: subordinada, e parece. Recuo mono para ler como nota. */
+.refusal-why {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+
+/* Sem as três colunas, a razão vira nota indentada sob a recusa —
+   o numeral segura a coluna da esquerda e a hierarquia sobrevive. */
+@media (max-width: 860px) {
+  .refusals li {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: var(--s3) var(--s5);
+  }
+
+  .refusal-mark {
+    grid-row: span 2;
+  }
+
+  .refusal-why {
+    padding-left: var(--s4);
+    border-left: 1px solid var(--rule);
+  }
+}
+
+/* ============================================================
+   17 · CONTATO
+
+   O formulário é a única lâmina em campo claro dentro do ato
+   escuro. É o objeto que se destaca porque é o que deve ser usado.
+   ============================================================ */
+.cta-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s8);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .cta-grid {
+    grid-template-columns: 1fr 0.92fr;
+    gap: var(--s9);
+  }
+}
+
+/* A foto entra clara — o escurecimento e todo daqui, como no hero. O veu
+   vertical fica quase solido ate 37%, onde o texto termina, e abre depressa
+   para baixo liberando as pessoas no quadrante que sobra a esquerda. O
+   horizontal fecha a partir de 62%, onde o card opaco do formulario se
+   apoia. Os dois pontos sao medidos na pagina, nao chutados. So no desktop: empilhado, o card cobre 61% da altura e a
+   foto nao teria onde aparecer. */
+@media (min-width: 960px) {
+  #contato {
+    position: relative;
+  }
+
+  #contato > .cta-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  #contato::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgb(11 10 20 / 0.95) 0%,
+        rgb(11 10 20 / 0.92) 37%,
+        rgb(11 10 20 / 0.55) 55%,
+        rgb(11 10 20 / 0.24) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgb(11 10 20 / 0.12) 0%,
+        rgb(11 10 20 / 0.05) 45%,
+        rgb(11 10 20 / 0.8) 62%,
+        rgb(11 10 20 / 0.92) 100%
+      ),
+      url('/cta-med.webp') center / cover no-repeat;
+  }
+}
+
+.cta-copy .h2 {
+  margin: var(--s4) 0 var(--s5);
+}
+
+.cta-highlight {
+  color: rgb(var(--rgb-eosin) / 1);
+}
+
+/* --- Formulário --- */
+.form-card {
+  background: var(--bg);
+  color: var(--fg);
+  border-radius: var(--r3);
+  border: 1px solid rgba(244, 242, 250, 0.14);
+  overflow: hidden;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+}
+
+.form-head {
+  padding: var(--s5) var(--s6);
+  border-bottom: 1px solid var(--rule);
+  background: var(--card);
+}
+
+.form-integration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--rgb-malachite) / 1);
+}
+
+.form-integration .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--rgb-malachite) / 1);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: var(--t-xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--fg);
+}
+
+.form-sub {
+  margin-top: var(--s2);
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+}
+
+.form-body {
+  padding: var(--s6);
+}
+
+/* Campo de formulário — prefixo form- porque .field, sozinho, é a seção
+   (o ato que pinta o próprio chão, lá em cima). Sem o prefixo, cada input
+   herdava o padding de seção inteira e o form virava uma escada. */
+.form-field {
+  margin-bottom: var(--s4);
+}
+
+.form-field label,
+.form-field-inline label {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-bottom: var(--s2);
+}
+
+.form-field input,
+.form-field select,
+.form-field-inline input,
+.form-field-inline select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 var(--s4);
+  background: var(--card-2);
+  border: 1px solid var(--rule-2);
+  border-radius: var(--r1);
+  color: var(--fg);
+  /* 16px evita o auto-zoom do iOS ao focar o campo. */
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+
+.form-field select,
+.form-field-inline select {
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: var(--s8);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field-inline input:focus,
+.form-field-inline select:focus {
+  border-color: rgb(var(--rgb-hematox) / 1);
+  box-shadow: 0 0 0 3px rgb(var(--rgb-hematox) / 0.16);
+}
+
+.form-field input::placeholder {
+  color: var(--fg-3);
+}
+
+.form-field.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s3);
+}
+
+@media (max-width: 460px) {
+  .form-field.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Erro: congo, e por campo — não pelo par inteiro. */
+.form-field.err input,
+.form-field.err select,
+.form-field-inline.err input,
+.form-field-inline.err select {
+  border-color: rgb(var(--rgb-congo) / 1);
+  background: rgb(var(--rgb-congo) / 0.06);
+}
+
+.field-err {
+  display: none;
+  margin-top: var(--s2);
+  font-size: var(--t-xs);
+  color: rgb(var(--rgb-congo) / 1);
+  font-weight: 500;
+}
+
+.form-field.err .field-err,
+.form-field-inline.err .field-err {
+  display: block;
+}
+
+.form-submit {
+  width: 100%;
+  margin-top: var(--s5);
+  position: relative;
+}
+
+.form-submit.loading {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.form-submit.loading .btn-text {
+  opacity: 0;
+}
+
+.form-submit.loading::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.form-legal {
+  margin-top: var(--s5);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-xs);
+  color: var(--fg-3);
+  line-height: 1.55;
+}
+
+.feedback {
+  padding: var(--s6);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--fg-2);
+  border-left: 3px solid rgb(var(--rgb) / 1);
+  background: rgb(var(--rgb) / 0.07);
+  --rgb: var(--rgb-malachite);
+}
+
+.feedback.error {
+  --rgb: var(--rgb-congo);
+}
+
+.feedback strong {
+  display: block;
+  margin-bottom: var(--s2);
+  font-family: var(--font-display);
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.wa-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s4);
+  color: rgb(var(--rgb) / 1);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--t-sm);
+  border-bottom: 1px solid rgb(var(--rgb) / 0.5);
+  padding-bottom: 2px;
+}
+
+.wa-link:hover {
+  border-bottom-color: rgb(var(--rgb) / 1);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   18 · RODAPÉ
+   ============================================================ */
+/* Contato e rodape sao os dois campos escuros: sem uma regua entre eles,
+   o fechamento escorre para dentro do rodape sem fronteira. O respiro de
+   cima sai daqui e vai para a grade, junto com a linha — no wrap ela
+   nasceria 48px mais larga que a regua de baixo, e duas reguas
+   desalinhadas uma sobre a outra saltam aos olhos. */
+.footer {
+  padding: 0 0 var(--s6);
+}
+
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s7);
+  padding-top: var(--s9);
+  padding-bottom: var(--s7);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (min-width: 800px) {
+  .footer-grid {
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: var(--s6);
+  }
+}
+
+.footer-brand-logo {
+  display: block;
+  height: 26px;
+  width: auto;
+  margin-bottom: var(--s4);
+}
+
+.footer-brand-desc {
+  font-size: var(--t-xs);
+  color: var(--fg-2);
+  line-height: 1.65;
+  max-width: 40ch;
+}
+
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: var(--s4);
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li + li {
+  margin-top: var(--s3);
+}
+
+.footer-col a {
+  color: var(--fg-2);
+  text-decoration: none;
+  font-size: var(--t-xs);
+  transition: color var(--fast) var(--ease);
+}
+
+.footer-col a:hover {
+  color: rgb(var(--rgb-hematox) / 1);
+}
+
+.footer-bottom {
+  padding-top: var(--s5);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 100, 'opsz' 14;
+  font-size: var(--t-micro);
+  letter-spacing: 0.04em;
+  color: var(--fg-3);
+}
+
+.footer-bottom a {
+  color: var(--fg-3);
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  color: var(--fg-2);
+}
+
+/* ============================================================
+   18b · EIXO CENTRAL NO MOBILE
+
+   Empilhado, a coluna e estreita e o alinhamento a esquerda deixa de
+   organizar: passa a ser so uma borda irregular. Hero, contato e rodape
+   vao para o eixo do meio.
+
+   799.98px e o complemento exato do min-width: 800px que monta as colunas
+   do rodape — em 800px redondo as duas regras valeriam ao mesmo tempo.
+   ============================================================ */
+@media (max-width: 799.98px) {
+  /* --- Hero --- */
+  .hero-content {
+    text-align: center;
+  }
+
+  /* Titulo e lede tem max-width propria: sem centrar a caixa, o texto
+     viria centrado dentro de um bloco ainda encostado a esquerda. */
+  .hero-headline,
+  .hero-content .lede {
+    margin-inline: auto;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+  }
+
+  /* --- Contato --- */
+  .cta-copy {
+    text-align: center;
+  }
+
+  .cta-copy .lede {
+    margin-inline: auto;
+  }
+
+  /* --- Rodape --- */
+  .footer-grid {
+    text-align: center;
+  }
+
+  .footer-brand-logo,
+  .footer-brand-desc {
+    margin-inline: auto;
+  }
+
+  .footer-bottom {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   19 · REVELAÇÃO NA ROLAGEM
+
+   Um único observer no cliente troca a classe. Sem biblioteca,
+   sem wrapper por elemento.
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--slow) var(--ease),
+    transform var(--slow) var(--ease);
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal='1'] { transition-delay: 60ms; }
+[data-reveal='2'] { transition-delay: 120ms; }
+[data-reveal='3'] { transition-delay: 180ms; }
+[data-reveal='4'] { transition-delay: 240ms; }
+
+/* Sem JS o conteúdo tem que aparecer mesmo assim. */
+.no-js [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   20 · MOVIMENTO REDUZIDO
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .specimen:hover {
+    transform: none;
+  }
+}

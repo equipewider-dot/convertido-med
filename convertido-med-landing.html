@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertido Med — Autoridade médica convertida em agenda particular</title>
+<meta name="description" content="A operação da Convertido dedicada exclusivamente a converter autoridade médica em agenda particular. Método próprio de 90 dias, integrado ao Convertido Hub.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CONVERTIDO MED — DESIGN SYSTEM (Convertido Marketing)
+   Dark mode · Inter · Roxo (#7B5CE5) + Magenta (#C05BCC)
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  /* Cores base — extraídas do design system Convertido */
+  --dark:#0D0B1A;
+  --dark-2:#14112A;
+  --dark-elev:rgba(255,255,255,0.03);
+  --dark-elev-2:rgba(255,255,255,0.05);
+  --text:#F0EEF8;
+  --text-strong:#FFFFFF;
+  --muted:rgba(240,238,248,0.55);
+  --muted-soft:rgba(240,238,248,0.3);
+
+  /* Cores de marca */
+  --accent:#7B5CE5;
+  --accent-2:#4B3BCC;
+  --accent-light:#A899F5;
+  --pink:#C05BCC;
+  --pink-light:#CC99DD;
+  --success:#6BCB8B;
+
+  /* Bordas & backgrounds */
+  --border:rgba(123,92,229,0.25);
+  --border-strong:rgba(123,92,229,0.4);
+  --border-soft:rgba(255,255,255,0.06);
+  --accent-bg:rgba(123,92,229,0.12);
+  --accent-bg-2:rgba(123,92,229,0.18);
+  --pink-bg:rgba(192,91,204,0.07);
+  --pink-border:rgba(192,91,204,0.25);
+  --success-bg:rgba(107,203,139,0.14);
+  --success-border:rgba(107,203,139,0.4);
+
+  /* Gradientes */
+  --grad-brand:linear-gradient(135deg,#4B3BCC,#7B5CE5);
+  --grad-brand-hover:linear-gradient(135deg,#5A4AD8,#8B6CF0);
+  --grad-text:linear-gradient(135deg,#fff 30%,#A899F5);
+  --grad-glow:linear-gradient(135deg,rgba(75,59,204,.28),rgba(192,91,204,.18));
+  --grad-radial:radial-gradient(1200px 600px at 50% -10%,rgba(123,92,229,0.18),transparent 60%);
+
+  /* Radii */
+  --r-sm:9px;
+  --r-md:13px;
+  --r-lg:18px;
+  --r-pill:20px;
+  --r-full:50px;
+
+  /* Layout */
+  --wrap-max:1100px;
+  --gutter:clamp(1rem,4vw,2.5rem);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--dark);
+  color:var(--text);
+  min-height:100vh;
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+.wrap{max-width:var(--wrap-max);margin:0 auto;padding:0 var(--gutter)}
+
+img{max-width:100%;display:block}
+
+::selection{background:var(--accent);color:var(--text-strong)}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+.label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-light);background:var(--accent-bg);
+  border:.5px solid var(--border-strong);
+  padding:5px 14px;border-radius:var(--r-pill);
+}
+
+.label-dot{width:5px;height:5px;background:var(--accent-light);border-radius:50%}
+
+.h1{
+  font-size:clamp(30px,5.5vw,52px);font-weight:700;line-height:1.08;
+  letter-spacing:-0.02em;color:var(--text-strong);
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.h2{
+  font-size:clamp(24px,3.5vw,36px);font-weight:600;line-height:1.15;
+  letter-spacing:-0.015em;color:var(--text-strong);
+}
+
+.h3{
+  font-size:clamp(18px,2vw,22px);font-weight:600;
+  color:var(--text-strong);letter-spacing:-0.01em;
+}
+
+.lede{font-size:clamp(15px,1.4vw,17px);color:var(--muted);line-height:1.65;max-width:560px}
+
+.eyebrow{
+  font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-light);margin-bottom:.8rem;
+}
+
+/* Chips (padrão Convertido) */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-size:12px;padding:5px 14px;border-radius:var(--r-pill);
+  border:.5px solid var(--border);color:var(--muted);
+  background:rgba(255,255,255,0.03);
+}
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:.9rem 2rem;border:none;
+  font-family:inherit;font-size:15px;font-weight:600;letter-spacing:.02em;
+  border-radius:var(--r-full);cursor:pointer;
+  transition:transform .15s ease,opacity .15s ease,box-shadow .2s ease;
+  text-decoration:none;
+}
+
+.btn-primary{background:var(--grad-brand);color:var(--text-strong)}
+.btn-primary:hover{opacity:.92;transform:scale(1.02);box-shadow:0 8px 24px rgba(123,92,229,.35)}
+.btn-primary:active{transform:scale(.98)}
+
+.btn-ghost{
+  background:transparent;color:var(--text);
+  border:.5px solid var(--border-strong);
+}
+.btn-ghost:hover{background:var(--accent-bg);border-color:var(--accent)}
+
+.btn-arrow{transition:transform .2s ease}
+.btn:hover .btn-arrow{transform:translateX(3px)}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(13,11,26,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:.5px solid transparent;
+  transition:border-color .3s ease;
+}
+.topbar.scrolled{border-bottom-color:var(--border)}
+.topbar-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 0;
+}
+.brand{
+  display:flex;align-items:baseline;gap:.6rem;text-decoration:none;color:var(--text-strong);
+}
+.brand-name{font-size:1.15rem;font-weight:700;letter-spacing:-0.02em}
+.brand-suffix{
+  font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent-light);background:var(--accent-bg);
+  padding:3px 8px;border-radius:4px;border:.5px solid var(--border);
+}
+
+.nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s ease}
+.nav-links a:hover{color:var(--text-strong)}
+.nav-cta{padding:.55rem 1.1rem;font-size:13px}
+
+.menu-toggle{display:none;background:transparent;border:none;cursor:pointer;padding:.4rem}
+.menu-toggle span{display:block;width:20px;height:1.5px;background:var(--text);margin:4px 0}
+
+@media(max-width:820px){
+  .nav-links li:not(:last-child){display:none}
+  .menu-toggle{display:block}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;
+  padding:clamp(4rem,10vw,7rem) 0 clamp(3rem,7vw,5rem);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:var(--grad-radial);
+  pointer-events:none;
+}
+.hero-grid{
+  position:relative;
+  display:grid;grid-template-columns:1fr;gap:3rem;align-items:center;
+}
+@media(min-width:900px){
+  .hero-grid{grid-template-columns:1.35fr 1fr;gap:4rem}
+}
+
+.hero-headline{margin:1.4rem 0 1.6rem}
+.hero-headline .em{
+  font-style:italic;font-weight:600;
+  background:linear-gradient(135deg,#A899F5,#C05BCC);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-chips{margin-top:2rem;justify-content:flex-start}
+
+.hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap;margin:2rem 0 0}
+
+.hero-quote{
+  background:var(--grad-glow);
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-lg);
+  padding:2rem;
+  position:relative;
+}
+.hero-quote::before{
+  content:'"';position:absolute;top:.5rem;left:1.2rem;
+  font-size:4rem;line-height:1;color:var(--accent-light);
+  font-family:Georgia,serif;opacity:.4;
+}
+.hero-quote-label{
+  font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent-light);margin-bottom:1rem;
+}
+.hero-quote-body{
+  font-size:1.05rem;line-height:1.55;color:var(--text);font-weight:400;
+  position:relative;z-index:1;
+}
+.hero-quote-attr{
+  margin-top:1.25rem;font-size:12px;color:var(--muted);letter-spacing:.02em;
+}
+
+/* ============================================================
+   PROOF STRIP
+   ============================================================ */
+.proof{
+  padding:2.5rem 0;
+  border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);
+  background:linear-gradient(180deg,transparent,rgba(123,92,229,.04));
+}
+.proof-grid{
+  display:grid;grid-template-columns:1fr;gap:2rem;align-items:center;
+}
+@media(min-width:800px){.proof-grid{grid-template-columns:auto 1fr}}
+.proof-label{
+  font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);max-width:220px;line-height:1.5;
+}
+.proof-numbers{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1.5rem;
+}
+.proof-value{
+  font-size:clamp(1.75rem,3vw,2.4rem);font-weight:700;line-height:1;
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-0.02em;margin-bottom:.4rem;
+}
+.proof-caption{font-size:12px;color:var(--muted);font-weight:500}
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+.section{padding:clamp(4rem,8vw,6rem) 0;position:relative}
+.section-header{max-width:680px;margin-bottom:3rem}
+.section-header .h2{margin:1rem 0}
+
+/* ============================================================
+   MANIFESTO
+   ============================================================ */
+.manifesto-grid{
+  display:grid;grid-template-columns:1fr;gap:2.5rem;
+}
+@media(min-width:900px){.manifesto-grid{grid-template-columns:220px 1fr;gap:5rem}}
+
+.manifesto-side{position:relative}
+.manifesto-side .label{position:sticky;top:100px}
+
+.manifesto-body{font-size:clamp(18px,2vw,22px);line-height:1.5;color:var(--text);font-weight:400}
+.manifesto-body p{margin-bottom:1.4rem}
+.manifesto-body p:last-child{margin-bottom:0}
+.manifesto-body .highlight{
+  background:linear-gradient(135deg,#A899F5,#C05BCC);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-weight:600;font-style:italic;
+}
+.manifesto-body em{color:var(--accent-light);font-style:italic}
+
+/* ============================================================
+   MÉTODO CONVERTIDO 90 (3 fases)
+   ============================================================ */
+.phases{display:grid;grid-template-columns:1fr;gap:1.25rem}
+@media(min-width:800px){.phases{grid-template-columns:repeat(3,1fr);gap:1.5rem}}
+
+.phase{
+  background:var(--dark-elev);
+  border:.5px solid var(--border);
+  border-radius:var(--r-md);
+  padding:1.75rem;
+  transition:all .3s ease;
+  position:relative;overflow:hidden;
+}
+.phase::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity .3s ease;
+}
+.phase:hover{background:var(--dark-elev-2);border-color:var(--border-strong);transform:translateY(-2px)}
+.phase:hover::before{opacity:1}
+
+.phase-num{
+  font-size:11px;font-weight:600;letter-spacing:.16em;
+  color:var(--accent-light);background:var(--accent-bg-2);
+  display:inline-block;padding:4px 10px;border-radius:4px;
+  margin-bottom:1.25rem;
+}
+.phase-name{
+  font-size:1.35rem;font-weight:600;color:var(--text-strong);
+  letter-spacing:-0.01em;margin-bottom:.25rem;
+}
+.phase-days{
+  font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.25rem;
+}
+.phase-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem}
+.phase-list{
+  list-style:none;padding-top:1.25rem;
+  border-top:.5px solid var(--border-soft);
+}
+.phase-list li{
+  padding:.5rem 0;font-size:13px;color:var(--text);
+  display:flex;align-items:flex-start;gap:.65rem;
+}
+.phase-list li::before{
+  content:'';width:4px;height:4px;background:var(--accent);border-radius:50%;
+  flex-shrink:0;margin-top:.55rem;
+}
+
+/* Timeline strip abaixo das fases */
+.phases-timeline{
+  margin-top:2.5rem;padding-top:1.5rem;
+  border-top:.5px solid var(--border-soft);
+  display:flex;justify-content:space-between;
+  font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ============================================================
+   4S DA CONVERTIDO
+   ============================================================ */
+.four-s-header{max-width:720px;margin-bottom:3rem}
+.four-s-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;
+}
+.s-card{
+  background:var(--dark-elev);
+  border:.5px solid var(--border);
+  border-radius:var(--r-md);
+  padding:1.5rem;
+  transition:all .3s ease;position:relative;
+}
+.s-card:hover{background:var(--dark-elev-2);border-color:var(--border-strong);transform:translateY(-3px)}
+
+.s-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:42px;
+  background:var(--accent-bg-2);
+  border:.5px solid var(--border-strong);
+  border-radius:var(--r-sm);
+  font-size:20px;color:var(--accent-light);
+  margin-bottom:1.25rem;
+}
+.s-code{
+  font-size:10px;font-weight:600;letter-spacing:.16em;
+  color:var(--pink);text-transform:uppercase;margin-bottom:.35rem;display:block;
+}
+.s-name{
+  font-size:1.2rem;font-weight:600;color:var(--text-strong);
+  letter-spacing:-0.01em;margin-bottom:.6rem;
+}
+.s-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ============================================================
+   COMPARAÇÃO — não é agência de tráfego
+   ============================================================ */
+.compare-grid{
+  display:grid;grid-template-columns:1fr;gap:1.25rem;
+}
+@media(min-width:800px){.compare-grid{grid-template-columns:1fr 1fr;gap:1.5rem}}
+
+.compare-col{
+  padding:2rem;border-radius:var(--r-md);position:relative;
+}
+.compare-neg{background:var(--dark-elev);border:.5px solid var(--border-soft)}
+.compare-pos{
+  background:var(--grad-glow);
+  border:1px solid var(--border-strong);
+}
+
+.compare-tag{
+  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 10px;border-radius:4px;margin-bottom:1rem;
+}
+.compare-neg .compare-tag{color:var(--muted);background:rgba(255,255,255,.05)}
+.compare-pos .compare-tag{color:var(--accent-light);background:var(--accent-bg-2)}
+
+.compare-title{
+  font-size:1.3rem;font-weight:600;color:var(--text-strong);
+  margin-bottom:1.75rem;line-height:1.25;letter-spacing:-0.01em;
+}
+
+.compare-list{list-style:none}
+.compare-list li{
+  padding:.9rem 0;font-size:13.5px;line-height:1.5;color:var(--text);
+  display:flex;gap:.75rem;align-items:flex-start;
+  border-top:.5px solid var(--border-soft);
+}
+.compare-list li:first-child{border-top:none;padding-top:0}
+
+.compare-icon{
+  flex-shrink:0;font-size:14px;line-height:1.5;
+  color:var(--muted);
+}
+.compare-pos .compare-icon{color:var(--accent-light)}
+
+/* ============================================================
+   CASES
+   ============================================================ */
+.cases-grid{
+  display:grid;grid-template-columns:1fr;gap:1.25rem;
+}
+@media(min-width:900px){.cases-grid{grid-template-columns:repeat(3,1fr);gap:1.5rem}}
+
+.case{
+  background:var(--dark-elev);
+  border:.5px solid var(--border);
+  border-radius:var(--r-md);
+  padding:1.75rem;transition:all .3s ease;
+}
+.case:hover{border-color:var(--border-strong);transform:translateY(-3px)}
+
+.case-specialty{
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pink);display:block;margin-bottom:1.5rem;
+}
+
+.case-metric{padding:1.1rem 0;border-top:.5px solid var(--border-soft)}
+.case-metric:first-of-type{border-top:none;padding-top:0}
+
+.case-value{
+  font-size:1.75rem;font-weight:700;line-height:1;
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-0.02em;margin-bottom:.3rem;
+}
+.case-label{font-size:12px;color:var(--muted);font-weight:500}
+
+.case-caption{
+  margin-top:1.25rem;padding-top:1.25rem;
+  border-top:.5px solid var(--border-soft);
+  font-size:13px;color:var(--muted);line-height:1.55;font-style:italic;
+}
+
+.cases-note{
+  margin-top:2rem;text-align:center;
+  font-size:12px;color:var(--muted-soft);font-style:italic;
+}
+
+/* ============================================================
+   O QUE NÃO FAZEMOS
+   ============================================================ */
+.not-doing{
+  background:linear-gradient(180deg,var(--dark),var(--dark-2));
+  border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);
+}
+
+.not-doing-list{list-style:none;max-width:800px}
+.not-doing-list li{
+  padding:1.5rem 0;
+  border-top:.5px solid var(--border-soft);
+  display:grid;grid-template-columns:auto 1fr;gap:1.25rem;align-items:baseline;
+}
+.not-doing-list li:last-child{border-bottom:.5px solid var(--border-soft)}
+
+.not-doing-mark{
+  font-size:11px;font-weight:600;letter-spacing:.16em;
+  color:var(--pink);background:var(--pink-bg);
+  padding:4px 10px;border-radius:4px;border:.5px solid var(--pink-border);
+  min-width:44px;text-align:center;height:fit-content;
+}
+.not-doing-item{
+  font-size:clamp(15px,1.7vw,18px);color:var(--text);line-height:1.5;font-weight:400;
+}
+.not-doing-item strong{color:var(--text-strong);font-weight:600}
+
+/* ============================================================
+   CTA FINAL + FORM CONVERTIDO HUB
+   ============================================================ */
+.cta{background:var(--dark)}
+.cta-grid{
+  display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;
+}
+@media(min-width:900px){.cta-grid{grid-template-columns:1fr 1fr;gap:5rem}}
+
+.cta-copy .h2{margin:1rem 0}
+.cta-quote{
+  margin-top:2rem;padding:1.5rem;
+  background:var(--dark-elev);border-left:2px solid var(--accent);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+}
+.cta-quote-body{
+  font-size:1.05rem;line-height:1.5;color:var(--text);font-weight:400;
+}
+.cta-quote-attr{margin-top:.75rem;font-size:12px;color:var(--muted)}
+
+/* Form */
+.form-card{
+  background:var(--grad-glow);
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-lg);
+  padding:2rem;
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--grad-brand);
+}
+
+.form-integration{
+  display:inline-flex;align-items:center;gap:.5rem;
+  margin-bottom:1.5rem;padding:5px 12px;
+  background:var(--success-bg);border:.5px solid var(--success-border);
+  border-radius:var(--r-pill);
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--success);
+}
+.form-integration .dot{
+  width:6px;height:6px;background:var(--success);border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.form-title{font-size:1.25rem;font-weight:600;color:var(--text-strong);margin-bottom:.35rem;letter-spacing:-0.01em}
+.form-sub{font-size:13px;color:var(--muted);margin-bottom:1.75rem}
+
+.field{margin-bottom:1rem}
+.field label{
+  display:block;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.4rem;
+}
+.field input,.field select{
+  width:100%;padding:.75rem 1rem;
+  background:rgba(255,255,255,0.05);
+  border:.5px solid var(--border);border-radius:var(--r-sm);
+  color:var(--text);font-size:14px;font-family:inherit;outline:none;
+  transition:border-color .2s ease,background .2s ease;
+}
+.field input:focus,.field select:focus{
+  border-color:var(--accent);background:rgba(255,255,255,0.07);
+}
+.field input::placeholder{color:var(--muted-soft)}
+.field select{cursor:pointer}
+.field select option{background:var(--dark);color:var(--text)}
+
+.field.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+
+.field.err input,.field.err select{border-color:var(--pink);background:var(--pink-bg)}
+.field-err{display:none;font-size:11px;color:var(--pink);margin-top:.35rem;font-weight:500}
+.field.err .field-err{display:block}
+
+.form-submit{
+  width:100%;justify-content:center;margin-top:.5rem;
+}
+.form-submit.loading{opacity:.7;pointer-events:none;position:relative}
+.form-submit.loading .btn-text{opacity:0}
+.form-submit.loading::after{
+  content:'';position:absolute;left:50%;top:50%;
+  width:16px;height:16px;margin:-8px 0 0 -8px;
+  border:2px solid rgba(255,255,255,.25);border-top-color:var(--text-strong);
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.form-legal{
+  margin-top:1.25rem;padding-top:1.25rem;
+  border-top:.5px solid var(--border-soft);
+  font-size:11px;color:var(--muted);line-height:1.5;
+}
+
+/* Feedback pós-envio */
+.feedback{
+  display:none;padding:1.5rem;border-radius:var(--r-sm);margin-top:1rem;
+  font-size:13.5px;line-height:1.55;
+}
+.feedback.success{
+  display:block;background:var(--success-bg);
+  border:.5px solid var(--success-border);color:var(--text);
+}
+.feedback.error{
+  display:block;background:var(--pink-bg);
+  border:.5px solid var(--pink-border);color:var(--text);
+}
+.feedback strong{
+  display:block;margin-bottom:.4rem;font-size:1rem;color:var(--text-strong);
+}
+.feedback .wa-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  margin-top:.75rem;color:var(--success);text-decoration:none;
+  font-weight:600;border-bottom:1px solid var(--success);
+}
+.hidden{display:none!important}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  background:linear-gradient(180deg,var(--dark),#080619);
+  padding:3.5rem 0 1.5rem;
+  border-top:.5px solid var(--border);
+}
+.footer-grid{
+  display:grid;grid-template-columns:1fr;gap:2.5rem;
+  padding-bottom:2.5rem;border-bottom:.5px solid var(--border-soft);
+}
+@media(min-width:800px){.footer-grid{grid-template-columns:1.5fr repeat(3,1fr);gap:3rem}}
+
+.footer-brand-name{
+  font-size:1.4rem;font-weight:700;color:var(--text-strong);
+  margin-bottom:.75rem;letter-spacing:-0.02em;
+}
+.footer-brand-name .suffix{
+  font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--accent-light);
+  background:var(--accent-bg);padding:3px 8px;border-radius:4px;margin-left:.5rem;
+  vertical-align:middle;text-transform:uppercase;border:.5px solid var(--border);
+}
+.footer-brand-desc{font-size:13px;color:var(--muted);line-height:1.6;max-width:340px}
+
+.footer-col h4{
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-strong);margin-bottom:1rem;
+}
+.footer-col ul{list-style:none}
+.footer-col li{padding:.35rem 0}
+.footer-col a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s ease}
+.footer-col a:hover{color:var(--accent-light)}
+
+.footer-bottom{
+  padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;
+  gap:1rem;font-size:11px;color:var(--muted-soft);
+}
+.footer-bottom a{color:var(--muted);text-decoration:none;transition:color .2s ease}
+.footer-bottom a:hover{color:var(--accent-light)}
+
+/* ============================================================
+   ANIMAÇÕES DE ENTRADA
+   ============================================================ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.reveal{opacity:0;animation:fadeUp .8s ease-out forwards}
+.d1{animation-delay:.08s}
+.d2{animation-delay:.18s}
+.d3{animation-delay:.28s}
+.d4{animation-delay:.38s}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOPBAR
+     ============================================================ -->
+<nav class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a href="#" class="brand">
+      <span class="brand-name">Convertido</span>
+      <span class="brand-suffix">Med</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#metodo">Método</a></li>
+      <li><a href="#quatro-s">Os 4S</a></li>
+      <li><a href="#cases">Cases</a></li>
+      <li><a href="#recusas">Recusas</a></li>
+      <li><a href="#contato" class="btn btn-primary nav-cta">Falar agora <span class="btn-arrow">→</span></a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="label reveal"><span class="label-dot"></span>Marketing de conversão médica</span>
+      <h1 class="h1 hero-headline reveal d1">Autoridade médica <span class="em">convertida</span> em agenda particular.</h1>
+      <p class="lede reveal d2">A operação da Convertido dedicada exclusivamente a médicos especialistas. Sem tráfego genérico, sem promessa de milagre. Método próprio, 90 dias, agenda funcionando com previsibilidade.</p>
+      <div class="hero-chips chips reveal d3">
+        <span class="chip">Método Convertido 90</span>
+        <span class="chip">Exclusivo para médicos</span>
+        <span class="chip">Dashboard aberto</span>
+        <span class="chip">Convertido Hub integrado</span>
+      </div>
+      <div class="hero-ctas reveal d4">
+        <a href="#contato" class="btn btn-primary">Falar com a operação <span class="btn-arrow">→</span></a>
+        <a href="#metodo" class="btn btn-ghost">Ver o método</a>
+      </div>
+    </div>
+
+    <aside class="hero-quote reveal d3">
+      <div class="hero-quote-label">Manifesto</div>
+      <p class="hero-quote-body">
+        Médico bom não deveria depender de convênio para ter agenda cheia. A gente construiu a Convertido Med sobre essa recusa.
+      </p>
+      <div class="hero-quote-attr">— Convertido Med</div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROOF STRIP
+     ============================================================ -->
+<section class="proof">
+  <div class="wrap proof-grid">
+    <div class="proof-label">Operação dedicada a médicos especialistas</div>
+    <div class="proof-numbers">
+      <div>
+        <div class="proof-value">100%</div>
+        <div class="proof-caption">Foco em medicina</div>
+      </div>
+      <div>
+        <div class="proof-value">90</div>
+        <div class="proof-caption">Dias de método</div>
+      </div>
+      <div>
+        <div class="proof-value">4S</div>
+        <div class="proof-caption">Pilares de campanha</div>
+      </div>
+      <div>
+        <div class="proof-value">1</div>
+        <div class="proof-caption">Métrica final: consulta</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MANIFESTO
+     ============================================================ -->
+<section class="section">
+  <div class="wrap manifesto-grid">
+    <div class="manifesto-side">
+      <span class="label"><span class="label-dot"></span>Manifesto</span>
+    </div>
+    <div class="manifesto-body">
+      <p>A gente acredita que médico bom não deveria depender de convênio para ter agenda cheia. Acredita que autoridade construída em anos de residência, plantão e estudo merece virar demanda, não só engajamento.</p>
+      <p>Paciente particular não chega por sorte. Chega por <span class="highlight">estrutura, método e paciência</span>. A gente não faz tráfego pago para médico. A gente converte autoridade médica em agenda particular.</p>
+      <p>É uma diferença pequena na frase e enorme no que aparece no consultório no final do mês.</p>
+      <p>Nosso trabalho começa antes do primeiro anúncio, no diagnóstico da especialidade, do ticket, do público, do gargalo real. E termina depois do último clique, no atendimento do WhatsApp, na taxa de agendamento, na cadeira ocupada.</p>
+      <p><em>Não prometemos milagre. Prometemos método, transparência e uma frente de captação particular funcionando em 90 dias.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MÉTODO CONVERTIDO 90
+     ============================================================ -->
+<section class="section" id="metodo" style="background:linear-gradient(180deg,transparent,rgba(123,92,229,.04),transparent)">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="label"><span class="label-dot"></span>Método Convertido 90</span>
+      <h2 class="h2">Três fases, noventa dias, um método próprio.</h2>
+      <p class="lede">Cada fase resolve um problema específico. A ordem não é sugestão, é estrutura. Campanha sem método é dinheiro queimado com estilo.</p>
+    </div>
+
+    <div class="phases">
+      <article class="phase">
+        <span class="phase-num">Fase 01</span>
+        <h3 class="phase-name">Diagnóstico</h3>
+        <div class="phase-days">Dias 1 a 30</div>
+        <p class="phase-desc">A operação entra no consultório antes de entrar no Ads Manager. Zero real investido em anúncio nessa fase. Se tem furo aqui, campanha nenhuma resolve.</p>
+        <ul class="phase-list">
+          <li>Ticket, público e capacidade</li>
+          <li>Script de WhatsApp reestruturado</li>
+          <li>Procedimento carro-chefe definido</li>
+          <li>Setup completo de mensuração</li>
+        </ul>
+      </article>
+
+      <article class="phase">
+        <span class="phase-num">Fase 02</span>
+        <h3 class="phase-name">Conversão</h3>
+        <div class="phase-days">Dias 31 a 60</div>
+        <p class="phase-desc">Campanhas ativas com otimização semanal baseada em qualificação, não em volume. O foco não é gerar mais lead. É converter mais lead em consulta.</p>
+        <ul class="phase-list">
+          <li>Landing page dedicada</li>
+          <li>Criativos por especialidade</li>
+          <li>Meta e Google Ads ativos</li>
+          <li>Otimização semanal com dado</li>
+        </ul>
+      </article>
+
+      <article class="phase">
+        <span class="phase-num">Fase 03</span>
+        <h3 class="phase-name">Escala</h3>
+        <div class="phase-days">Dias 61 a 90</div>
+        <p class="phase-desc">Análise cirúrgica do que trouxe paciente real e redistribuição de verba nos canais vencedores. O relatório final mede consulta realizada, não clique comprado.</p>
+        <ul class="phase-list">
+          <li>Análise de canais vencedores</li>
+          <li>Verba realocada estrategicamente</li>
+          <li>Refinamento de atendimento</li>
+          <li>Plano de continuidade documentado</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="phases-timeline">
+      <span>Dia 0</span>
+      <span>Dia 30</span>
+      <span>Dia 60</span>
+      <span>Dia 90</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4S DA CONVERTIDO (adaptados para medicina)
+     ============================================================ -->
+<section class="section" id="quatro-s">
+  <div class="wrap">
+    <div class="four-s-header">
+      <span class="label"><span class="label-dot"></span>Metodologia Convertido</span>
+      <h2 class="h2">Os 4S aplicados ao consultório particular.</h2>
+      <p class="lede">Streaming, Scrolling, Search e Shopping. Os quatro comportamentos digitais que fazem o paciente sair do desconhecido e chegar até a cadeira do consultório. Nenhuma campanha vai ao ar sem passar pelos quatro.</p>
+    </div>
+
+    <div class="four-s-grid">
+      <div class="s-card">
+        <div class="s-icon">&#9654;</div>
+        <span class="s-code">S1</span>
+        <h3 class="s-name">Streaming</h3>
+        <p class="s-desc">Vídeo do médico explicando procedimento, tour do consultório, depoimento de paciente. YouTube, Reels longos e TikTok. É onde a autoridade médica ganha rosto e vira confiança antes do primeiro contato.</p>
+      </div>
+
+      <div class="s-card">
+        <div class="s-icon">&#8597;</div>
+        <span class="s-code">S2</span>
+        <h3 class="s-name">Scrolling</h3>
+        <p class="s-desc">Conteúdo no feed do Instagram, LinkedIn e Reels curtos que educa sobre a especialidade. É o que gera reconhecimento espontâneo e traz o paciente já pré-qualificado para o próximo estágio.</p>
+      </div>
+
+      <div class="s-card">
+        <div class="s-icon">&#128269;</div>
+        <span class="s-code">S3</span>
+        <h3 class="s-name">Search</h3>
+        <p class="s-desc">Google Ads, SEO médico e presença local. Captura quem está buscando ativamente o sintoma, o procedimento ou o especialista. É a intenção mais quente do funil, e a mais desperdiçada por agências genéricas.</p>
+      </div>
+
+      <div class="s-card">
+        <div class="s-icon">&#128722;</div>
+        <span class="s-code">S4</span>
+        <h3 class="s-name">Shopping</h3>
+        <p class="s-desc">A landing como hub de conversão. Jornada fluida do clique ao agendamento, WhatsApp com fluxo estruturado, integração com o Convertido Hub. É onde o interesse vira consulta na agenda.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPARAÇÃO — vs agência de tráfego
+     ============================================================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="label"><span class="label-dot"></span>O que nos separa</span>
+      <h2 class="h2">Não somos mais uma agência de tráfego focada em médico.</h2>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-col compare-neg">
+        <span class="compare-tag">Agência comum</span>
+        <h3 class="compare-title">Vende execução. Mede clique.</h3>
+        <ul class="compare-list">
+          <li><span class="compare-icon">−</span>Contratada para rodar anúncio</li>
+          <li><span class="compare-icon">−</span>Métricas de vaidade: CPM, CTR, alcance</li>
+          <li><span class="compare-icon">−</span>Atende qualquer nicho</li>
+          <li><span class="compare-icon">−</span>Relatório mensal em PDF confuso</li>
+          <li><span class="compare-icon">−</span>Playbook genérico aplicado igual</li>
+        </ul>
+      </div>
+
+      <div class="compare-col compare-pos">
+        <span class="compare-tag">Convertido Med</span>
+        <h3 class="compare-title">Vende resultado. Mede consulta.</h3>
+        <ul class="compare-list">
+          <li><span class="compare-icon">✦</span>Contratada para resolver dependência do convênio</li>
+          <li><span class="compare-icon">✦</span>Lead qualificado, agendamento, consulta realizada</li>
+          <li><span class="compare-icon">✦</span>Exclusivamente médico especialista</li>
+          <li><span class="compare-icon">✦</span>Dashboard aberto, reunião semanal, Convertido Hub integrado</li>
+          <li><span class="compare-icon">✦</span>Leitura fina do paciente da sua especialidade</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CASES
+     ============================================================ -->
+<section class="section" id="cases" style="background:linear-gradient(180deg,transparent,rgba(192,91,204,.03),transparent)">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="label"><span class="label-dot"></span>Prova em número</span>
+      <h2 class="h2">O que nossos médicos viram nos primeiros 90 dias.</h2>
+      <p class="lede">Dashboard aberto, número verificável, consulta realizada. Os cases abaixo são representativos e ilustram a leitura de dados que entregamos por especialidade.</p>
+    </div>
+
+    <div class="cases-grid">
+      <article class="case">
+        <span class="case-specialty">Ortopedia · Interior SP</span>
+        <div class="case-metric">
+          <div class="case-value">R$ 87</div>
+          <div class="case-label">Custo por lead qualificado</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">42%</div>
+          <div class="case-label">Taxa de agendamento</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">61</div>
+          <div class="case-label">Consultas particulares no mês 3</div>
+        </div>
+        <p class="case-caption">Saiu de dependência quase total do convênio para 40% de faturamento particular em 90 dias.</p>
+      </article>
+
+      <article class="case">
+        <span class="case-specialty">Oftalmologia · Capital</span>
+        <div class="case-metric">
+          <div class="case-value">R$ 54</div>
+          <div class="case-label">Custo por lead qualificado</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">38%</div>
+          <div class="case-label">Taxa de agendamento</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">94</div>
+          <div class="case-label">Consultas particulares no mês 3</div>
+        </div>
+        <p class="case-caption">Estruturação do WhatsApp na fase 1 dobrou a taxa de agendamento antes mesmo do primeiro anúncio subir.</p>
+      </article>
+
+      <article class="case">
+        <span class="case-specialty">Cirurgia plástica · Capital</span>
+        <div class="case-metric">
+          <div class="case-value">R$ 168</div>
+          <div class="case-label">Custo por lead qualificado</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">31%</div>
+          <div class="case-label">Taxa de agendamento</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-value">37</div>
+          <div class="case-label">Consultas particulares no mês 3</div>
+        </div>
+        <p class="case-caption">Ticket médio elevado justifica CPL maior. O que importa é ROI de procedimento fechado, não custo por clique.</p>
+      </article>
+    </div>
+
+    <p class="cases-note">Números representativos. Cases completos com dashboard aberto disponíveis na reunião de diagnóstico.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     O QUE NÃO FAZEMOS
+     ============================================================ -->
+<section class="section not-doing" id="recusas">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="label"><span class="label-dot"></span>Recusas públicas</span>
+      <h2 class="h2">O que a Convertido Med não faz, e nem vai fazer.</h2>
+      <p class="lede">Cada recusa aqui é um filtro. Se você lê alguma delas e pensa "então essa não é pra mim", a gente conseguiu o que queria. Melhor sair no começo do que virar arrependimento seu daqui a três meses.</p>
+    </div>
+
+    <ul class="not-doing-list">
+      <li>
+        <span class="not-doing-mark">i.</span>
+        <p class="not-doing-item">Não trabalhamos com médico que <strong>quer só testar por um mês</strong>. Método de 90 dias existe pelo motivo pelo qual existe.</p>
+      </li>
+      <li>
+        <span class="not-doing-mark">ii.</span>
+        <p class="not-doing-item">Não prometemos <strong>número específico de leads ou consultas</strong>. Nem a gente controla o que o paciente decide depois de ver seu anúncio.</p>
+      </li>
+      <li>
+        <span class="not-doing-mark">iii.</span>
+        <p class="not-doing-item">Não fazemos <strong>Instagram para quem não quer aparecer</strong>. Autoridade médica precisa de rosto e nome, não de post educativo genérico.</p>
+      </li>
+      <li>
+        <span class="not-doing-mark">iv.</span>
+        <p class="not-doing-item">Não atendemos <strong>fora de medicina especializada</strong>. Nada de dentista, nada de estética não médica, nada de e-commerce.</p>
+      </li>
+      <li>
+        <span class="not-doing-mark">v.</span>
+        <p class="not-doing-item">Não escondemos <strong>verba de mídia dentro da mensalidade</strong>. Investimento em anúncio é sempre separado, transparente e no seu gestor de conta.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA FINAL + FORM INTEGRADO AO CONVERTIDO HUB
+     ============================================================ -->
+<section class="section cta" id="contato">
+  <div class="wrap cta-grid">
+    <div class="cta-copy">
+      <span class="label"><span class="label-dot"></span>Próximo passo</span>
+      <h2 class="h2">O primeiro passo é uma <span style="background:linear-gradient(135deg,#A899F5,#C05BCC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">conversa de diagnóstico</span>.</h2>
+      <p class="lede">Se você é médico especialista e quer sair da dependência do convênio, a gente marca uma conversa de 30 minutos, sem custo e sem compromisso. Nessa conversa, você vai saber se faz sentido a gente trabalhar junto, ou não. Se não fizer, a gente te diz na hora.</p>
+      <div class="cta-quote">
+        <p class="cta-quote-body">"Prefiro perder um contrato do que entregar mal e virar arrependimento seu daqui a três meses."</p>
+        <div class="cta-quote-attr">— Regra interna da Convertido Med</div>
+      </div>
+    </div>
+
+    <form class="form-card" id="leadForm" novalidate>
+      <div class="form-integration">
+        <span class="dot"></span>
+        <span>Leads gerenciados no Convertido Hub</span>
+      </div>
+      <div class="form-title">Solicitar conversa de diagnóstico</div>
+      <div class="form-sub">Resposta em até 24 horas úteis pelo WhatsApp informado</div>
+
+      <div id="formFields">
+        <div class="field">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" required placeholder="Dr(a). Fulano da Silva" autocomplete="name">
+          <div class="field-err">Informe seu nome completo.</div>
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail profissional</label>
+          <input type="email" id="email" name="email" required placeholder="contato@consultorio.com.br" autocomplete="email">
+          <div class="field-err">Informe um e-mail válido.</div>
+        </div>
+
+        <div class="field two">
+          <div>
+            <label for="especialidade">Especialidade</label>
+            <select id="especialidade" name="especialidade" required>
+              <option value="">Selecione</option>
+              <option>Ortopedia</option>
+              <option>Oftalmologia</option>
+              <option>Cirurgia plástica</option>
+              <option>Dermatologia</option>
+              <option>Ginecologia</option>
+              <option>Cardiologia</option>
+              <option>Urologia</option>
+              <option>Otorrinolaringologia</option>
+              <option>Endocrinologia</option>
+              <option>Neurologia</option>
+              <option>Outra especialidade médica</option>
+            </select>
+            <div class="field-err">Selecione a especialidade.</div>
+          </div>
+          <div>
+            <label for="cidade">Cidade e UF</label>
+            <input type="text" id="cidade" name="cidade" required placeholder="São Paulo/SP" autocomplete="address-level2">
+            <div class="field-err">Informe a cidade.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="whatsapp">WhatsApp com DDD</label>
+          <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(11) 90000-0000" autocomplete="tel">
+          <div class="field-err">Informe um WhatsApp válido com DDD.</div>
+        </div>
+
+        <div class="field">
+          <label for="contexto">Em uma frase, qual seu principal gargalo hoje?</label>
+          <input type="text" id="contexto" name="contexto" placeholder="Ex: dependência do convênio">
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+          <span class="btn-text">Solicitar diagnóstico <span class="btn-arrow">→</span></span>
+        </button>
+
+        <div class="form-legal">
+          Ao enviar, você concorda que a equipe da Convertido Med entre em contato pelo WhatsApp informado. Seus dados são tratados conforme a LGPD, armazenados no Convertido Hub e não são compartilhados com terceiros.
+        </div>
+      </div>
+
+      <div class="feedback success" id="successMsg">
+        <strong>Recebemos sua solicitação.</strong>
+        A equipe da Convertido Med entra em contato pelo WhatsApp informado em até 24 horas úteis. Se preferir adiantar, é só chamar direto pelo link abaixo.
+        <a href="https://wa.me/5511999999999?text=Vim%20da%20landing%20e%20quero%20agendar%20o%20diagn%C3%B3stico" class="wa-link" target="_blank" rel="noopener">Ir para o WhatsApp →</a>
+      </div>
+
+      <div class="feedback error" id="errorMsg">
+        <strong>Não conseguimos registrar sua solicitação agora.</strong>
+        Nada grave, é só um soluço técnico. Chama a gente direto pelo WhatsApp que resolve em segundos.
+        <a href="https://wa.me/5511999999999?text=Vim%20da%20landing%20e%20quero%20agendar%20o%20diagn%C3%B3stico" class="wa-link" target="_blank" rel="noopener">Ir para o WhatsApp →</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Convertido <span class="suffix">Med</span></div>
+        <p class="footer-brand-desc">
+          A operação da Convertido dedicada exclusivamente a converter autoridade médica em agenda particular. Metodologia 4S aplicada ao consultório, com CRM integrado ao Convertido Hub.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Operação</h4>
+        <ul>
+          <li><a href="#metodo">Método Convertido 90</a></li>
+          <li><a href="#quatro-s">Os 4S da Convertido</a></li>
+          <li><a href="#cases">Cases</a></li>
+          <li><a href="#recusas">O que não fazemos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Editorial</h4>
+        <ul>
+          <li><a href="#">Newsletter Convertido</a></li>
+          <li><a href="#">Relatório setorial</a></li>
+          <li><a href="#">Podcast</a></li>
+          <li><a href="#">Biblioteca</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="#contato">Solicitar diagnóstico</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Convertido Med · uma operação da Convertido Marketing</div>
+      <div><a href="#">Política de Privacidade</a> · <a href="#">Termos</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONVERTIDO MED — INTEGRAÇÕES
+   ============================================================
+   
+   INTEGRAÇÃO COM O CONVERTIDO HUB (via webhook n8n)
+   ─────────────────────────────────────────────────
+   Fluxo: [Landing] --POST--> [Webhook n8n] --API--> [Convertido Hub]
+                                                     create_opportunity
+   
+   PASSO A PASSO PARA ATIVAR:
+   
+   1. No n8n, criar workflow com:
+      - Trigger: Webhook (POST, path /convertido-med-lead)
+      - Node: HTTP Request ou node oficial do Convertido Hub
+              chamando create_opportunity com o payload recebido
+      - Response: retorna 200 OK
+   
+   2. Copiar a URL do webhook (algo como
+      https://n8n-convertido-claude.up.railway.app/webhook/convertido-med-lead)
+   
+   3. Colar essa URL na constante HUB_WEBHOOK_URL abaixo.
+   
+   4. Ajustar o número do WhatsApp de fallback nas duas ocorrências
+      de wa.me/5511999999999 no HTML.
+   
+   stageId (etapa inicial do funil) e owner (responsável) são definidos
+   no próprio workflow do n8n. Assim, mudar essas regras no futuro não
+   exige mexer no HTML da landing.
+============================================================ */
+
+const HUB_WEBHOOK_URL = 'https://COLE-AQUI-A-URL-DO-WEBHOOK-DO-N8N';
+const SIMULATE_MODE = HUB_WEBHOOK_URL.includes('COLE-AQUI');
+
+/* ------------------------------------------------------------
+   TOPBAR: adiciona border no scroll
+   ------------------------------------------------------------ */
+const topbar = document.getElementById('topbar');
+window.addEventListener('scroll', () => {
+  topbar.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+/* ------------------------------------------------------------
+   Captura de UTMs (origem da campanha)
+   ------------------------------------------------------------ */
+function captureUtms() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get('utm_source') || 'direto',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_content: params.get('utm_content') || '',
+    utm_term: params.get('utm_term') || '',
+    referrer: document.referrer || 'direto'
+  };
+}
+
+/* ------------------------------------------------------------
+   Validação de campos
+   ------------------------------------------------------------ */
+function validateField(field) {
+  const wrapper = field.closest('.field');
+  let valid = true;
+
+  if (field.hasAttribute('required') && !field.value.trim()) {
+    valid = false;
+  } else if (field.type === 'email' && field.value) {
+    valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+  } else if (field.type === 'tel' && field.value) {
+    const digits = field.value.replace(/\D/g, '');
+    valid = digits.length >= 10 && digits.length <= 13;
+  }
+
+  wrapper.classList.toggle('err', !valid);
+  return valid;
+}
+
+function validateForm(form) {
+  const fields = form.querySelectorAll('input[required], select[required]');
+  let allValid = true;
+  fields.forEach(f => { if (!validateField(f)) allValid = false; });
+  return allValid;
+}
+
+/* ------------------------------------------------------------
+   Máscara automática de WhatsApp
+   ------------------------------------------------------------ */
+const whatsappInput = document.getElementById('whatsapp');
+if (whatsappInput) {
+  whatsappInput.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 10) {
+      e.target.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    } else if (v.length > 6) {
+      e.target.value = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    } else if (v.length > 2) {
+      e.target.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    } else {
+      e.target.value = v;
+    }
+  });
+}
+
+// Validação em tempo real
+document.querySelectorAll('#leadForm input, #leadForm select').forEach(field => {
+  field.addEventListener('blur', () => { if (field.value) validateField(field); });
+  field.addEventListener('input', () => {
+    if (field.closest('.field').classList.contains('err')) validateField(field);
+  });
+});
+
+/* ------------------------------------------------------------
+   Monta payload no formato do Convertido Hub (create_opportunity)
+   ------------------------------------------------------------ */
+function buildHubPayload(formData, utms) {
+  let city = formData.cidade;
+  let state = '';
+  if (formData.cidade && formData.cidade.includes('/')) {
+    const parts = formData.cidade.split('/');
+    city = parts[0].trim();
+    state = parts[1].trim().toUpperCase();
+  }
+
+  const externalKey = `landing-medcv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+  return {
+    // Campos que vão direto para create_opportunity do Convertido Hub
+    companyName: `Consultório ${formData.nome}`,
+    contactName: formData.nome,
+    email: formData.email,
+    phone: formData.whatsapp,
+    city: city,
+    state: state,
+    segment: formData.especialidade,
+    description: formData.contexto || 'Sem contexto informado no formulário',
+    origin: `Landing Convertido Med · ${utms.utm_source}`,
+    channel: utms.utm_medium || 'landing_page',
+    priority: 'Alta',
+    tags: ['landing-med', formData.especialidade.toLowerCase().replace(/\s+/g, '-')],
+    externalKey: externalKey,
+    sourceUrl: window.location.href,
+    notes: [
+      `Origem: ${utms.utm_source}`,
+      `Campanha: ${utms.utm_campaign || 'sem UTM'}`,
+      `Conteúdo: ${utms.utm_content || 'sem UTM'}`,
+      `Referrer: ${utms.referrer}`,
+      `Contexto informado: ${formData.contexto || 'não informado'}`
+    ].join('\n'),
+    _meta: {
+      submittedAt: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      landingVersion: 'v2.0-convertido-design-system'
+    }
+  };
+}
+
+/* ------------------------------------------------------------
+   Handler do submit
+   ------------------------------------------------------------ */
+const form = document.getElementById('leadForm');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    document.getElementById('successMsg').style.display = 'none';
+    document.getElementById('errorMsg').style.display = 'none';
+
+    if (!validateForm(form)) {
+      const firstError = form.querySelector('.err input, .err select');
+      if (firstError) firstError.focus();
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    const fields = document.getElementById('formFields');
+    btn.classList.add('loading');
+
+    const formData = {
+      nome: document.getElementById('nome').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      especialidade: document.getElementById('especialidade').value,
+      cidade: document.getElementById('cidade').value.trim(),
+      whatsapp: document.getElementById('whatsapp').value.trim(),
+      contexto: document.getElementById('contexto').value.trim()
+    };
+
+    const payload = buildHubPayload(formData, captureUtms());
+
+    try {
+      if (SIMULATE_MODE) {
+        console.log('[SIMULATE_MODE] Payload que seria enviado ao Convertido Hub:', payload);
+        await new Promise(r => setTimeout(r, 1000));
+      } else {
+        const response = await fetch(HUB_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      }
+
+      fields.classList.add('hidden');
+      document.getElementById('successMsg').style.display = 'block';
+
+      if (typeof gtag === 'function') gtag('event', 'lead_submitted');
+      if (typeof fbq === 'function') fbq('track', 'Lead');
+      window.dispatchEvent(new CustomEvent('lead:submitted', { detail: payload }));
+
+    } catch (err) {
+      console.error('[Convertido Hub] Falha ao enviar lead:', err);
+      document.getElementById('errorMsg').style.display = 'block';
+      btn.classList.remove('loading');
+    }
+  });
+}
+</script>
+
+</body>
+</html>

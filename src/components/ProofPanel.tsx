@@ -5,7 +5,7 @@ import { PROOF_NUMBERS, type Stain } from '@/lib/content';
 const STAINS: Stain[] = ['hematox', 'aniline', 'ochre', 'malachite'];
 
 /**
- * Bloco, não seção: abre a seção do Método Convertido 90, dentro do
+ * Bloco, não seção: abre a seção do Método Convertido 120, dentro do
  * mesmo `.wrap`. As credenciais e os números são a prova que sustenta o
  * método — separá-los em duas seções era o que criava a divisão.
  */

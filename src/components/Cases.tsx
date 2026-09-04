@@ -8,7 +8,7 @@ export default function Cases() {
         <div className="section-head">
           <Tag stain="ochre">Prova em número</Tag>
           <h2 className="display h2">
-            O que nossos médicos viram nos primeiros 90 dias.
+            O que nossos médicos viram nos primeiros 120 dias.
           </h2>
           <p className="lede">
             Dashboard aberto, número verificável, consulta realizada. Os cases

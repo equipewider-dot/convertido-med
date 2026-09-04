@@ -39,7 +39,7 @@ export default function Hero() {
           <p className="lede">
             A operação da Convertido dedicada exclusivamente a médicos
             especialistas. Sem tráfego genérico, sem promessa de milagre. Método
-            próprio, 90 dias, agenda funcionando com previsibilidade.
+            próprio, 120 dias, agenda funcionando com previsibilidade.
           </p>
 
           <div className="hero-ctas">

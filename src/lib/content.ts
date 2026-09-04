@@ -13,7 +13,7 @@ export const NAV_LINKS = [
 
 export const PROOF_NUMBERS = [
   { value: '100%', caption: 'Foco em medicina' },
-  { value: '90', caption: 'Dias de método' },
+  { value: '120', caption: 'Dias de método' },
   { value: '4S', caption: 'Pilares de campanha' },
   { value: '1', caption: 'Métrica final: consulta' },
 ] as const;
@@ -32,7 +32,7 @@ export type Claim = {
 };
 
 export const CLAIMS: Claim[] = [
-  { label: 'Método Convertido 90', icon: 'calendar', stain: 'hematox' },
+  { label: 'Método Convertido 120', icon: 'calendar', stain: 'hematox' },
   { label: 'Exclusivo para médicos', icon: 'stethoscope', stain: 'eosin' },
   { label: 'Dashboard aberto', icon: 'dashboard', stain: 'aniline' },
   { label: 'Convertido Hub integrado', icon: 'hub', stain: 'malachite' },
@@ -90,7 +90,7 @@ export const PHASES: Phase[] = [
     num: 'Fase 01',
     stain: 'hematox',
     name: 'Diagnóstico',
-    days: 'Dias 1 a 30',
+    days: 'Dias 1 a 40',
     desc: 'A operação entra no consultório antes de entrar no Ads Manager. Zero real investido em anúncio nessa fase. Se tem furo aqui, campanha nenhuma resolve.',
     items: [
       'Ticket, público e capacidade',
@@ -103,7 +103,7 @@ export const PHASES: Phase[] = [
     num: 'Fase 02',
     stain: 'aniline',
     name: 'Conversão',
-    days: 'Dias 31 a 60',
+    days: 'Dias 41 a 80',
     desc: 'Campanhas ativas com otimização semanal baseada em qualificação, não em volume. O foco não é gerar mais lead. É converter mais lead em consulta.',
     items: [
       'Landing page dedicada',
@@ -116,7 +116,7 @@ export const PHASES: Phase[] = [
     num: 'Fase 03',
     stain: 'malachite',
     name: 'Escala',
-    days: 'Dias 61 a 90',
+    days: 'Dias 81 a 120',
     desc: 'Análise cirúrgica do que trouxe paciente real e redistribuição de verba nos canais vencedores. O relatório final mede consulta realizada, não clique comprado.',
     items: [
       'Análise de canais vencedores',
@@ -127,7 +127,7 @@ export const PHASES: Phase[] = [
   },
 ];
 
-export const TIMELINE = ['Dia 0', 'Dia 30', 'Dia 60', 'Dia 90'] as const;
+export const TIMELINE = ['Dia 0', 'Dia 40', 'Dia 80', 'Dia 120'] as const;
 
 export type SCard = {
   icon: 'streaming' | 'scrolling' | 'search' | 'shopping';
@@ -216,7 +216,7 @@ export const CASES: Case[] = [
       { value: '61', label: 'Consultas particulares no mês 3' },
     ],
     caption:
-      'Saiu de dependência quase total do convênio para 40% de faturamento particular em 90 dias.',
+      'Saiu de dependência quase total do convênio para 40% de faturamento particular em 120 dias.',
   },
   {
     specialty: 'Oftalmologia · Capital',
@@ -260,7 +260,7 @@ export const REFUSALS: Refusal[] = [
     icon: 'stopwatch',
     before: 'Não trabalhamos com médico que ',
     strong: 'quer só testar por um mês',
-    why: 'Método de 90 dias existe pelo motivo pelo qual existe.',
+    why: 'Método de 120 dias existe pelo motivo pelo qual existe.',
   },
   {
     icon: 'target',
@@ -306,7 +306,7 @@ export const FOOTER_COLS = [
   {
     title: 'Operação',
     links: [
-      { href: '#metodo', label: 'Método Convertido 90' },
+      { href: '#metodo', label: 'Método Convertido 120' },
       { href: '#quatro-s', label: 'Os 4S da Convertido' },
           { href: '#recusas', label: 'O que não fazemos' },
     ],

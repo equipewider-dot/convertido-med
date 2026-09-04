@@ -9,9 +9,9 @@ export default function Metodo() {
         <ProofPanel />
 
         <div className="section-head">
-          <Tag stain="hematox">Método Convertido 90</Tag>
+          <Tag stain="hematox">Método Convertido 120</Tag>
           <h2 className="display h2">
-            Três fases, noventa dias, um método próprio.
+            Três fases, cento e vinte dias, um método próprio.
           </h2>
           <p className="lede">
             Cada fase resolve um problema específico. A ordem não é sugestão, é

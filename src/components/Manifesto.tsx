@@ -35,7 +35,7 @@ export default function Manifesto() {
             </span>
             <p className="promise-text">
               Não prometemos milagre. Prometemos método, transparência e
-              captação particular funcionando em 90 dias.
+              captação particular funcionando em 120 dias.
             </p>
           </div>
 

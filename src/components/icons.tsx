@@ -108,7 +108,7 @@ export function IconClose({ size = 20, className }: IconProps) {
 
 /* --- Ícones das credenciais da faixa --- */
 
-/** Método Convertido 90 — os noventa dias, com um deles marcado. */
+/** Método Convertido 120 — os cento e vinte dias, com um deles marcado. */
 export function IconCalendar({ size = 20, className }: IconProps) {
   return (
     <svg {...base(size)} className={className}>
@@ -196,7 +196,7 @@ export function IconRoute({ size = 20, className }: IconProps) {
 
 /* --- Ícones das recusas: cada um nomeia o que está sendo recusado --- */
 
-/** Teste de um mês — o cronômetro curto contra os noventa dias. */
+/** Teste de um mês — o cronômetro curto contra os cento e vinte dias. */
 export function IconStopwatch({ size = 20, className }: IconProps) {
   return (
     <svg {...base(size)} className={className}>

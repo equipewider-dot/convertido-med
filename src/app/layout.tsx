@@ -23,7 +23,7 @@ const body = Inter({
 export const metadata: Metadata = {
   title: 'Convertido Med — Autoridade médica convertida em agenda particular',
   description:
-    'A operação da Convertido dedicada exclusivamente a converter autoridade médica em agenda particular. Método próprio de 90 dias, integrado ao Convertido Hub.',
+    'A operação da Convertido dedicada exclusivamente a converter autoridade médica em agenda particular. Método próprio de 120 dias, integrado ao Convertido Hub.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

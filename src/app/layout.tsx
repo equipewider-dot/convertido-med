@@ -21,9 +21,14 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Convertido Med — Autoridade médica convertida em agenda particular',
+  title: 'Convertido Med | Autoridade médica convertida em agenda particular',
   description:
     'A operação da Convertido dedicada exclusivamente a converter autoridade médica em agenda particular. Método próprio de 120 dias, integrado ao Convertido Hub.',
+  icons: {
+    icon: '/med-favicon.png',
+    shortcut: '/med-favicon.png',
+    apple: '/med-favicon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

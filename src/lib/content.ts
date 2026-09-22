@@ -324,7 +324,7 @@ export const FOOTER_COLS = [
     title: 'Contato',
     links: [
       { href: '#contato', label: 'Solicitar diagnóstico' },
-      { href: '#', label: 'WhatsApp' },
+      { href: 'https://api.whatsapp.com/send/?phone=5527997959625&', label: 'WhatsApp' },
       { href: '#', label: 'Instagram' },
       { href: '#', label: 'LinkedIn' },
     ],

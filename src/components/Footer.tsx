@@ -26,7 +26,13 @@ export default function Footer() {
               <ul>
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href}>{link.label}</a>
+                    {link.href.startsWith('http') ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a href={link.href}>{link.label}</a>
+                    )}
                   </li>
                 ))}
               </ul>

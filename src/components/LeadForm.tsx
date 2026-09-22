@@ -20,9 +20,7 @@ declare global {
   }
 }
 
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || '5511999999999';
-const WHATSAPP_TEXT = 'Vim da landing e quero agendar o diagnóstico';
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_TEXT)}`;
+const WHATSAPP_URL = 'https://api.whatsapp.com/send/?phone=5527997959625&';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 

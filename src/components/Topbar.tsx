@@ -15,6 +15,17 @@ export default function Topbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Alargou a janela: o painel some por CSS, mas o estado precisa ir
+     junto — senao aria-expanded segue true e o botao volta com o X. */
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 901px)');
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false);
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
   // Esc fecha o menu — toda camada sobreposta precisa de saída.
   useEffect(() => {
     if (!open) return;

@@ -575,6 +575,10 @@ img {
 }
 
 .mobile-menu {
+  /* So abaixo do breakpoint. Sem isto, quem abre o menu estreito e
+     depois alarga a janela fica com o painel aberto sob a barra que
+     ja voltou a mostrar os links. */
+  display: none;
   border-top: 1px solid rgba(244, 242, 250, 0.12);
   background: rgba(11, 10, 20, 0.98);
   border-bottom-left-radius: var(--r3);
@@ -615,6 +619,9 @@ img {
   }
   .menu-toggle {
     display: inline-flex;
+  }
+  .mobile-menu {
+    display: block;
   }
 }
 

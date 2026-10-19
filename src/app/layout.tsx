@@ -62,6 +62,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {children}
         <Reveal />
+        {/* Botão flutuante do CRM Vert (abre o formulário de contato) */}
+        <Script
+          src="https://crmvert.com.br/api/forms/cmvbernik000bir1rta4r0lyq/botao"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
